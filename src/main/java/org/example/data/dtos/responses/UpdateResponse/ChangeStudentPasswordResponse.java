@@ -1,4 +1,4 @@
-package org.example.data.dtos.responses.CreateResponses;
+package org.example.data.dtos.responses.UpdateResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateStudentResponse {
+public class ChangeStudentPasswordResponse {
 
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
 }
