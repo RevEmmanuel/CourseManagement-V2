@@ -32,7 +32,7 @@ public class StudentServiceImpl implements StudentService{
                 .password(createStudentRequest.getPassword())
                 .build();
         Optional<Student> student = studentRepository.findStudentByEmail(createStudentRequest.getEmail());
-        if (student.isPresent()) throw new UserAlreadyExistsException();
+        if (student.isPresent()) throw new UserAlreadyExistsException("Student with email address exists already!");
         Student newStudent = studentRepository.save(studentToBeCreated);
         return CreateStudentResponse.builder()
                 .id(newStudent.getId())

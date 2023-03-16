@@ -10,10 +10,11 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ChangeStudentPasswordRequest {
+public class ChangeTeacherPasswordRequest {
 
     @NotNull(message = "Input cannot be null")
     private Long id;
+
     @Size(min = 8, max = 20, message = "Password length must be between 8 and 20 characters")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$", message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and no whitespace.")
     private String password;

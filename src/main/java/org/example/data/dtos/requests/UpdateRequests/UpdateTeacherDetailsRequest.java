@@ -1,8 +1,6 @@
 package org.example.data.dtos.requests.UpdateRequests;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateStudentDetailsRequest {
+public class UpdateTeacherDetailsRequest {
 
     @NotNull(message = "Input cannot be null")
     private Long id;
@@ -22,4 +20,7 @@ public class UpdateStudentDetailsRequest {
     private String lastName;
     @Email(message = "Please enter a valid email address")
     private String email;
+    @NotEmpty(message = "Phone number cannot be empty")
+    @Pattern(regexp = "^(?:\\+234|0)(?:(?:80|81|70|81|90|91|81|70|81|81)\\d{8}|(?:708|802|903|905)\\d{7})$\n", message = "Invalid phone number format")
+    private String phoneNumber;
 }

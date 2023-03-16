@@ -4,19 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.data.models.Course;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindStudentResponse {
+@Builder
+public class FindTeacherResponse {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private Set<Course> courses;
+    private String phoneNumber;
 }

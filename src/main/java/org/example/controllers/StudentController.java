@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import org.example.data.dtos.requests.CreateRequests.CreateStudentRequest;
 import org.example.data.dtos.requests.UpdateRequests.UpdateStudentDetailsRequest;
 import org.example.data.dtos.responses.CreateResponses.CreateStudentResponse;
@@ -46,10 +47,11 @@ public class StudentController {
     @Operation(summary = "Get A Particular Student by the student's Id",
             description = "Returns a Response entity containing the requested student and HTTP status code")
     @GetMapping("find/{studentId}")
-    public ResponseEntity<?> getUserById(
+    public ResponseEntity<?> getStudentById(
             @PathVariable
             @Parameter(name = "id", description = "The id of the required student",
-                    required = true, example = "1")
+                    required = true, example = "1") @Valid
+            @NotNull(message = "Input cannot be null")
             Long studentId) {
         FindStudentResponse foundStudent = studentService.findStudentById(studentId);
 //        return ResponseEntity.status(HttpStatus.OK).body(foundStudent);
@@ -76,6 +78,7 @@ public class StudentController {
             @PathVariable
             @Parameter(name = "studentId", required = true, example = "1",
                     description = "The Id of the student to delete")
+                    @Valid @NotNull(message = "Input cannot be null")
             Long studentId) {
         studentService.deleteStudentById(studentId);
 //        return ResponseEntity.status(HttpStatus.OK).build();
@@ -103,6 +106,7 @@ public class StudentController {
             @PathVariable
             @Parameter(name = "studentId", example = "1", required = true,
                     description = "The ID of the student whose courses is being retrieved.")
+            @NotNull(message = "Input cannot be null") @Valid
             Long studentId) {
         Set<Course> courses = studentService.getCoursesForStudent(studentId);
 

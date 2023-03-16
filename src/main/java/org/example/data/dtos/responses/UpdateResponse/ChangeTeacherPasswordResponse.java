@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChangeStudentPasswordResponse {
+@Builder
+public class ChangeTeacherPasswordResponse {
 
     private Long id;
     private String response;
