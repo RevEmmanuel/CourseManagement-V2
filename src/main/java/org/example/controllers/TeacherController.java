@@ -5,13 +5,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.example.data.dtos.requests.CreateRequests.CourseInvitationEntityRequest;
 import org.example.data.dtos.requests.CreateRequests.CreateCourseRequest;
 import org.example.data.dtos.requests.CreateRequests.CreateTeacherRequest;
 import org.example.data.dtos.requests.UpdateRequests.UpdateTeacherDetailsRequest;
+import org.example.data.dtos.responses.CreateResponses.CourseInvitationEntityResponse;
 import org.example.data.dtos.responses.CreateResponses.CreateCourseResponse;
 import org.example.data.dtos.responses.CreateResponses.CreateTeacherResponse;
 import org.example.data.dtos.responses.FindResponses.FindCourseForTeacherResponse;
 import org.example.data.dtos.responses.FindResponses.FindTeacherResponse;
+import org.example.data.dtos.responses.FindResponses.FindTokensForTeacherResponse;
 import org.example.data.dtos.responses.UpdateResponse.UpdateTeacherDetailsResponse;
 import org.example.data.models.Teacher;
 import org.example.services.TeacherService;
@@ -142,4 +145,35 @@ public class TeacherController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(response);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @Operation(summary = "Get all tokens a teacher has created",
+            description = "Returns a Response entity containing all existing invite tokens of a teacher.")
+    @GetMapping("/{teacherId}/tokens")
+    public ResponseEntity<?> findAllTokensForTeacher(
+            @PathVariable
+            @Parameter(name = "teacherId", required = true, example = "1",
+                    description = "The Id of the teacher whose invite tokens are required")
+            @Valid @NotNull(message = "Input cannot be null")
+            Long teacherId
+    ) {
+        FindTokensForTeacherResponse foundTokens = teacherService.findTokensForTeacher(teacherId);
+
+//        return ResponseEntity.status(HttpStatus.OK).body(foundTokens);
+        return new ResponseEntity<>(foundTokens, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Create a new invite token",
+            description = "Returns a Response entity containing the new token's details and HTTP status code")
+    @PostMapping("/createToken")
+    public ResponseEntity<?> createToken(
+            @RequestBody
+            @Parameter(name = "CourseInvitationEntityRequest", required = true,
+                    description = "Contains the details required to create a new token which are the token, teacher ID, email address of student and the course code")
+            @Valid CourseInvitationEntityRequest entityRequest) {
+        CourseInvitationEntityResponse response = teacherService.createToken(entityRequest);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
 }

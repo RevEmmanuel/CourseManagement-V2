@@ -8,9 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import org.example.data.dtos.requests.CreateRequests.CreateStudentRequest;
 import org.example.data.dtos.requests.UpdateRequests.UpdateStudentDetailsRequest;
 import org.example.data.dtos.responses.CreateResponses.CreateStudentResponse;
+import org.example.data.dtos.responses.FindResponses.FindCourseForStudentResponse;
 import org.example.data.dtos.responses.FindResponses.FindStudentResponse;
 import org.example.data.dtos.responses.UpdateResponse.UpdateStudentDetailsResponse;
-import org.example.data.models.Course;
 import org.example.data.models.Student;
 import org.example.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/student")
@@ -108,7 +107,7 @@ public class StudentController {
                     description = "The ID of the student whose courses is being retrieved.")
             @NotNull(message = "Input cannot be null") @Valid
             Long studentId) {
-        Set<Course> courses = studentService.getCoursesForStudent(studentId);
+        FindCourseForStudentResponse courses = studentService.getCoursesForStudent(studentId);
 
 //        return ResponseEntity.status(HttpStatus.OK).body(emails);
         return new ResponseEntity<>(courses, HttpStatus.OK);

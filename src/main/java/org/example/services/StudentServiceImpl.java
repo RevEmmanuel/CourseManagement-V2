@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.data.dtos.requests.CreateRequests.CreateStudentRequest;
 import org.example.data.dtos.requests.UpdateRequests.UpdateStudentDetailsRequest;
 import org.example.data.dtos.responses.CreateResponses.CreateStudentResponse;
+import org.example.data.dtos.responses.FindResponses.FindCourseForStudentResponse;
 import org.example.data.dtos.responses.FindResponses.FindStudentResponse;
 import org.example.data.dtos.responses.UpdateResponse.UpdateStudentDetailsResponse;
 import org.example.data.models.Course;
@@ -12,10 +13,7 @@ import org.example.data.repositories.StudentRepository;
 import org.example.exceptions.StudentNotFoundException;
 import org.example.exceptions.UserAlreadyExistsException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -89,8 +87,16 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Set<Course> getCoursesForStudent(Long studentId) {
-        return studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new).getCourses();
+    public FindCourseForStudentResponse getCoursesForStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new);
+        Set<Course> courses = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new).getCourses();
+        List<Course> coursesList = new ArrayList<>(courses);
+        return FindCourseForStudentResponse.builder()
+                .firstName(student.getFirstName())
+                .lastName(student.getLastName())
+                .email(student.getEmail())
+                .courses(coursesList)
+                .build();
     }
 
     @Override
@@ -101,5 +107,12 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public List<Student> findStudentsByCourse(Course course) {
         return studentRepository.findByCoursesContaining(course);
+    }
+
+    @Override
+    public void addCourse(String studentEmailAddress, Course course) {
+        Student foundStudent = studentRepository.findStudentByEmail(studentEmailAddress).orElseThrow(StudentNotFoundException::new);
+        foundStudent.getCourses().add(course);
+        studentRepository.save(foundStudent);
     }
 }

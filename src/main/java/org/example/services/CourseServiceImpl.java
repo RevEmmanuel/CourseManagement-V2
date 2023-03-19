@@ -9,6 +9,7 @@ import org.example.data.models.Teacher;
 import org.example.data.repositories.CourseRepository;
 import org.example.exceptions.CourseNotFoundException;
 import org.example.exceptions.UnauthorizedActionException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -119,6 +120,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> findCourseForTeacher(Long teacherId) {
         return courseRepository.findByTeacher_Id(teacherId);
+    }
+
+    @Override
+    public HttpStatus registerStudent(String studentEmailAddress, String courseCode) {
+        Course foundCourse = courseRepository.findCourseByCourseCode(courseCode).orElseThrow(CourseNotFoundException::new);
+        studentService.addCourse(studentEmailAddress, foundCourse);
+        return HttpStatus.OK;
     }
 
 }

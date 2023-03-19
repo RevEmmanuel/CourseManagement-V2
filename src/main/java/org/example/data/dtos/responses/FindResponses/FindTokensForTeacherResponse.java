@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.data.models.Course;
+import org.example.data.models.CourseInvitationEntity;
+
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindCourseForTeacherResponse {
+public class FindTokensForTeacherResponse {
 
     private String firstName;
     private String lastName;
-    private List<Course> courses;
-
+    private List<CourseInvitationEntity> tokens;
 }

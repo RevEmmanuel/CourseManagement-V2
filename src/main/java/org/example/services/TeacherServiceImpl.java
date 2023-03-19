@@ -1,13 +1,16 @@
 package org.example.services;
 
 import lombok.RequiredArgsConstructor;
+import org.example.data.dtos.requests.CreateRequests.CourseInvitationEntityRequest;
 import org.example.data.dtos.requests.CreateRequests.CreateCourseRequest;
 import org.example.data.dtos.requests.CreateRequests.CreateTeacherRequest;
 import org.example.data.dtos.requests.UpdateRequests.UpdateTeacherDetailsRequest;
+import org.example.data.dtos.responses.CreateResponses.CourseInvitationEntityResponse;
 import org.example.data.dtos.responses.CreateResponses.CreateCourseResponse;
 import org.example.data.dtos.responses.CreateResponses.CreateTeacherResponse;
 import org.example.data.dtos.responses.FindResponses.FindCourseForTeacherResponse;
 import org.example.data.dtos.responses.FindResponses.FindTeacherResponse;
+import org.example.data.dtos.responses.FindResponses.FindTokensForTeacherResponse;
 import org.example.data.dtos.responses.UpdateResponse.UpdateTeacherDetailsResponse;
 import org.example.data.models.Course;
 import org.example.data.models.Teacher;
@@ -24,6 +27,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final CourseService courseService;
+
+    private final CourseInvitationEntityService courseInvitationEntityService;
 
     @Override
     public CreateTeacherResponse createTeacher(CreateTeacherRequest createTeacherRequest) {
@@ -113,5 +118,21 @@ public class TeacherServiceImpl implements TeacherService {
     public CreateCourseResponse createCourse(Long teacherId, CreateCourseRequest courseRequest) {
         Teacher foundTeacher = teacherRepository.findById(teacherId).orElseThrow(TeacherNotFoundException::new);
         return courseService.createCourse(foundTeacher, courseRequest);
+    }
+
+    @Override
+    public FindTokensForTeacherResponse findTokensForTeacher(Long teacherId) {
+        Teacher foundTeacher = teacherRepository.findById(teacherId).orElseThrow(TeacherNotFoundException::new);
+        return FindTokensForTeacherResponse.builder()
+                .firstName(foundTeacher.getFirstName())
+                .lastName(foundTeacher.getLastName())
+                .tokens(courseInvitationEntityService.findByTeacher(teacherId))
+                .build();
+    }
+
+    @Override
+    public CourseInvitationEntityResponse createToken(CourseInvitationEntityRequest entityRequest) {
+        Teacher foundTeacher = teacherRepository.findById(entityRequest.getTeacherId()).orElseThrow(TeacherNotFoundException::new);
+        return courseInvitationEntityService.createToken(foundTeacher, entityRequest);
     }
 }

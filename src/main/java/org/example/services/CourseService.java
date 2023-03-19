@@ -5,6 +5,8 @@ import org.example.data.dtos.responses.CreateResponses.CreateCourseResponse;
 import org.example.data.dtos.responses.FindResponses.FindCourseResponse;
 import org.example.data.models.Course;
 import org.example.data.models.Teacher;
+import org.springframework.http.HttpStatus;
+
 import java.util.List;
 
 public interface CourseService {
@@ -18,5 +20,7 @@ public interface CourseService {
     void deleteCourseByCourseCode(Long teacherId, String courseCode);
 
     List<Course> findCourseForTeacher(Long teacherId);
+
+    HttpStatus registerStudent(String studentEmailAddress, String courseCode);
 
 }

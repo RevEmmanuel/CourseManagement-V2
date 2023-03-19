@@ -5,16 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.data.models.Course;
-import java.util.List;
 
-@Data
-@Builder
+import java.util.List;
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindCourseForTeacherResponse {
+@Data
+@Builder
+public class FindCourseForStudentResponse {
 
     private String firstName;
     private String lastName;
+    private String email;
     private List<Course> courses;
-
 }
