@@ -5,9 +5,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.example.data.dtos.requests.CreateRequests.CreateCourseRequest;
 import org.example.data.dtos.requests.CreateRequests.CreateTeacherRequest;
 import org.example.data.dtos.requests.UpdateRequests.UpdateTeacherDetailsRequest;
+import org.example.data.dtos.responses.CreateResponses.CreateCourseResponse;
 import org.example.data.dtos.responses.CreateResponses.CreateTeacherResponse;
+import org.example.data.dtos.responses.FindResponses.FindCourseForTeacherResponse;
 import org.example.data.dtos.responses.FindResponses.FindTeacherResponse;
 import org.example.data.dtos.responses.UpdateResponse.UpdateTeacherDetailsResponse;
 import org.example.data.models.Teacher;
@@ -104,5 +107,39 @@ public class TeacherController {
 
 //        return ResponseEntity.status(HttpStatus.OK).body(students);
         return new ResponseEntity<>(teachers, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get all courses a teacher has created",
+            description = "Returns a Response entity containing all existing courses of a teacher.")
+    @GetMapping("/{teacherId}/courses")
+    public ResponseEntity<?> findAllCoursesForTeacher(
+            @PathVariable
+            @Parameter(name = "teacherId", required = true, example = "1",
+                    description = "The Id of the teacher whose courses are required")
+            @Valid @NotNull(message = "Input cannot be null")
+            Long teacherId
+    ) {
+        FindCourseForTeacherResponse foundCourses = teacherService.getCoursesForTeacher(teacherId);
+
+//        return ResponseEntity.status(HttpStatus.OK).body(foundCourses);
+        return new ResponseEntity<>(foundCourses, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Create a new course",
+            description = "The teacher creates a new course. Returns a Response entity containing the new course's details and HTTP status code")
+    @PostMapping("/{teacherId}/createCourse")
+    public ResponseEntity<?> createCourse(
+            @PathVariable
+            @Parameter(name = "teacherId", required = true, example = "1",
+                    description = "The Id of the teacher who is creating the course")
+            @Valid @NotNull(message = "Input cannot be null")
+            Long teacherId,
+            @RequestBody
+            @Parameter(name = "CreateTeacherRequest", required = true,
+                    description = "Contains the details required to create a new course which are course code, course name, description and publicity")
+            @Valid CreateCourseRequest courseRequest) {
+        CreateCourseResponse response = teacherService.createCourse(teacherId ,courseRequest);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

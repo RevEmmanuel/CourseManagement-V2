@@ -97,4 +97,9 @@ public class StudentServiceImpl implements StudentService{
     public List<Student> findAllStudents() {
         return studentRepository.findAll();
     }
+
+    @Override
+    public List<Student> findStudentsByCourse(Course course) {
+        return studentRepository.findByCoursesContaining(course);
+    }
 }

@@ -22,6 +22,6 @@ public class CreateTeacherRequest {
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$", message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and no whitespace.")
     private String password;
     @NotEmpty(message = "Phone number cannot be empty")
-    @Pattern(regexp = "^(?:\\+234|0)(?:(?:80|81|70|81|90|91|81|70|81|81)\\d{8}|(?:708|802|903|905)\\d{7})$\n", message = "Invalid phone number format")
+    @Pattern(regexp = "^(?:\\+234|0)(?:(?:80|81|70|81|90|91|81|70|81|81)\\d{8}|(?:708|802|903|905)\\d{7})$", message = "Invalid phone number format")
     private String phoneNumber;
 }

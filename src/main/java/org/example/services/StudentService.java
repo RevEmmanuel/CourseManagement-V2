@@ -26,4 +26,7 @@ public interface StudentService {
 
 
     List<Student> findAllStudents();
+
+    List<Student> findStudentsByCourse(Course course);
+
 }
